@@ -1,114 +1,117 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
-import React, {Fragment} from 'react';
+import React, { Component } from "react";
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
+  Alert,
+  Keyboard,
   Text,
-  StatusBar,
-} from 'react-native';
+  View,
+  StyleSheet,
+  ScrollView
+} from "react-native";
+import { Formik } from "formik";
+import { Button, TextInput, RadioButton } from "react-native-paper";
+import Colors from "./Colors";
+import Header from "./Header";
 
-import {
-  Header,
-  LearnMoreLinks,
-  Colors,
-  DebugInstructions,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+export default class App extends Component {
+  render() {
+    return (
+      <View style={styles.container}>
+        <Header />
+        <ScrollView style={styles.content}>
+          <Formik
+            initialValues={{
+              hadFever: "yes",
+              temperature: "",
+              hadCough: "yes"
+            }}
+            onSubmit={values => {
+              Alert.alert(JSON.stringify(values, null, 2));
+              Keyboard.dismiss();
+            }}
+          >
+            {({ handleChange, handleSubmit, values }) => (
+              <View>
+                <View>
+                  <Text style={styles.textLabel}>
+                    Have you had fever over the last 5 days?
+                  </Text>
+                  <RadioButton.Group
+                    style={styles.input}
+                    onValueChange={handleChange("hadFever")}
+                    value={values.hadFever}
+                  >
+                    <View>
+                      <Text>Yes</Text>
+                      <RadioButton value="yes" />
+                    </View>
+                    <View>
+                      <Text>No</Text>
+                      <RadioButton value="no" />
+                    </View>
+                  </RadioButton.Group>
+                </View>
+                <View>
+                  <Text style={styles.textLabel}>
+                    What is your temperature?
+                  </Text>
+                  <TextInput
+                    label="(Temperature reading from a thermometer)"
+                    onChangeText={handleChange("temperature")}
+                    value={values.temperature}
+                    placeholder="80"
+                  />
+                </View>
+                <View>
+                  <Text style={styles.textLabel}>Have you had cough?</Text>
+                  <RadioButton.Group
+                    style={styles.input}
+                    onValueChange={handleChange("hadCough")}
+                    value={values.hadCough}
+                  >
+                    <View>
+                      <Text>Yes</Text>
+                      <RadioButton value="yes" />
+                    </View>
+                    <View>
+                      <Text>No</Text>
+                      <RadioButton value="no" />
+                    </View>
+                  </RadioButton.Group>
+                </View>
 
-const App = () => {
-  return (
-    <Fragment>
-      <StatusBar barStyle="dark-content" />
-      <SafeAreaView>
-        <ScrollView
-          contentInsetAdjustmentBehavior="automatic"
-          style={styles.scrollView}>
-          <Header />
-          {global.HermesInternal == null ? null : (
-            <View style={styles.engine}>
-              <Text style={styles.footer}>Engine: Hermes</Text>
-            </View>
-          )}
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Step One</Text>
-              <Text style={styles.sectionDescription}>
-                Edit <Text style={styles.highlight}>App.js</Text> to change this
-                screen and then come back to see your edits.
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>See Your Changes</Text>
-              <Text style={styles.sectionDescription}>
-                <ReloadInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Debug</Text>
-              <Text style={styles.sectionDescription}>
-                <DebugInstructions />
-              </Text>
-            </View>
-            <View style={styles.sectionContainer}>
-              <Text style={styles.sectionTitle}>Learn More</Text>
-              <Text style={styles.sectionDescription}>
-                Read the docs to discover what to do next:
-              </Text>
-            </View>
-            <LearnMoreLinks />
-          </View>
+                <Button onPress={handleSubmit} style={styles.button}>
+                  Submit
+                </Button>
+              </View>
+            )}
+          </Formik>
         </ScrollView>
-      </SafeAreaView>
-    </Fragment>
-  );
-};
+      </View>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
-  scrollView: {
-    backgroundColor: Colors.lighter,
+  container: {
+    flex: 1,
+    backgroundColor: Colors.white
   },
-  engine: {
-    position: 'absolute',
-    right: 0,
+  content: {
+    padding: 16
   },
-  body: {
-    backgroundColor: Colors.white,
+  button: {
+    borderRadius: 30,
+    marginTop: 16,
+    bottom: 30
   },
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  textLabel: {
+    fontSize: 30,
+    fontWeight: "100",
     color: Colors.black,
+    marginTop: 20,
+    bottom: 10
   },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-    color: Colors.dark,
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-  footer: {
-    color: Colors.dark,
-    fontSize: 12,
-    fontWeight: '600',
-    padding: 4,
-    paddingRight: 12,
-    textAlign: 'right',
-  },
+  input: {
+    paddingLeft: 20
+  }
 });
-
-export default App;
