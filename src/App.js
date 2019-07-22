@@ -11,7 +11,7 @@ import { Formik } from "formik";
 import { Button, TextInput, RadioButton } from "react-native-paper";
 import Colors from "../assets/Colors";
 import Header from "./Header";
-import upload from "./service";
+import { FluService } from "./service";
 
 export default class App extends Component {
   render() {
@@ -26,11 +26,26 @@ export default class App extends Component {
               hadCough: "yes"
             }}
             onSubmit={values => {
-              upload(values).then(function(response) {
-                if (response.status == 200) {
-                  Alert.alert("Data was successfully uploaded.");
-                }
-              });
+              const fluService = new FluService();
+              fluService
+                .upload(values)
+                .then(function(response) {
+                  if (response.status == 200) {
+                    // Alert.alert("Uploaded Successfully.");
+                    status = fluService.hasFlu(values);
+                    console.log(status);
+                    if (status) {
+                      Alert.alert("You have a flu.");
+                    } else {
+                      Alert.alert("You do not have a flu.");
+                    }
+                  } else {
+                    Alert.alert("Upload Failed!!!");
+                  }
+                })
+                .catch(error => {
+                  Alert.alert("Upload Failed!!!");
+                });
               Keyboard.dismiss();
             }}
           >
