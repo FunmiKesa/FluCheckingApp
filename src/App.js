@@ -9,8 +9,9 @@ import {
 } from "react-native";
 import { Formik } from "formik";
 import { Button, TextInput, RadioButton } from "react-native-paper";
-import Colors from "./Colors";
+import Colors from "../assets/Colors";
 import Header from "./Header";
+import upload from "./service";
 
 export default class App extends Component {
   render() {
@@ -25,13 +26,17 @@ export default class App extends Component {
               hadCough: "yes"
             }}
             onSubmit={values => {
-              Alert.alert(JSON.stringify(values, null, 2));
+              upload(values).then(function(response) {
+                if (response.status == 200) {
+                  Alert.alert("Data was successfully uploaded.");
+                }
+              });
               Keyboard.dismiss();
             }}
           >
             {({ handleChange, handleSubmit, values }) => (
               <View>
-                <View>
+                <View style={styles.box}>
                   <Text style={styles.textLabel}>
                     Have you had fever over the last 5 days?
                   </Text>
@@ -50,7 +55,7 @@ export default class App extends Component {
                     </View>
                   </RadioButton.Group>
                 </View>
-                <View>
+                <View style={styles.box}>
                   <Text style={styles.textLabel}>
                     What is your temperature?
                   </Text>
@@ -61,7 +66,7 @@ export default class App extends Component {
                     placeholder="80"
                   />
                 </View>
-                <View>
+                <View style={styles.box}>
                   <Text style={styles.textLabel}>Have you had cough?</Text>
                   <RadioButton.Group
                     style={styles.input}
@@ -79,7 +84,11 @@ export default class App extends Component {
                   </RadioButton.Group>
                 </View>
 
-                <Button onPress={handleSubmit} style={styles.button}>
+                <Button
+                  onPress={handleSubmit}
+                  style={styles.button}
+                  color={Colors.white}
+                >
                   Submit
                 </Button>
               </View>
@@ -102,7 +111,9 @@ const styles = StyleSheet.create({
   button: {
     borderRadius: 30,
     marginTop: 16,
-    bottom: 30
+    marginBottom: 30,
+    backgroundColor: Colors.primary,
+    color: Colors.white
   },
   textLabel: {
     fontSize: 30,
@@ -113,5 +124,11 @@ const styles = StyleSheet.create({
   },
   input: {
     paddingLeft: 20
+  },
+  box: {
+    paddingBottom: 20,
+    backgroundColor: Colors.lighter,
+    padding: 10,
+    marginBottom: 10
   }
 });

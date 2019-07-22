@@ -1,10 +1,11 @@
 "use strict";
 
 export default {
-  primary: "#1292B4",
+  primary: "#009ac9",
   white: "#FFF",
   lighter: "#F3F3F3",
   light: "#DAE1E7",
   dark: "#444",
-  black: "#000"
+  black: "rgb(68, 63, 63)",
+  accent: "#f1c40f"
 };

@@ -2,12 +2,12 @@
 
 import React from "react";
 import { Text, StyleSheet, ImageBackground, Dimensions } from "react-native";
-import Colors from "./Colors";
+import Colors from "../assets/Colors";
 
 const Header = () => (
   <ImageBackground
     accessibilityRole={"image"}
-    source={require("./logo.png")}
+    source={require("../assets/logo.png")}
     style={styles.pic}
     imageStyle={styles.logo}
   >
@@ -17,9 +17,7 @@ const Header = () => (
 
 const styles = StyleSheet.create({
   pic: {
-    // paddingBottom: 40,
     paddingTop: 50,
-    // paddingHorizontal: 32,
     width: Dimensions.get("window").width,
     backgroundColor: Colors.lighter,
     justifyContent: "flex-end",
@@ -36,7 +34,7 @@ const styles = StyleSheet.create({
     padding: 20,
     textAlign: "center",
     fontFamily: "Cochin",
-    color: "rgb(68, 63, 63)",
+    color: Colors.black,
     fontWeight: "bold",
     bottom: 0
   }
