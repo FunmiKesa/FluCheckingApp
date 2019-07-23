@@ -3,15 +3,14 @@ export class FluService {
     debugger;
     console.log(data);
     return fetch(
-      "http://node-express-env.ir8hkvdpni.us-east-2.elasticbeanstalk.com/flu/upload",
+      "http://flucheckerapi.us-east-2.elasticbeanstalk.com/flu/upload",
       // "http://localhost:3000/flu/upload",
       {
         method: "POST",
         headers: {
-          Accept: "application/json",
           "Content-Type": "application/json"
         },
-        data: JSON.stringify(data)
+        body: JSON.stringify(data)
       }
     )
       .then(function(response) {

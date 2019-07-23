@@ -12,7 +12,11 @@ import { Button, TextInput, RadioButton } from "react-native-paper";
 import Colors from "../assets/Colors";
 import Header from "./Header";
 import { FluService } from "./service";
+import * as Yup from "yup";
 
+const validationSchema = Yup.object().shape({
+  temperature: Yup.number("This is not a number.").required()
+});
 export default class App extends Component {
   render() {
     return (
@@ -20,6 +24,7 @@ export default class App extends Component {
         <Header />
         <ScrollView style={styles.content}>
           <Formik
+            validationSchema={validationSchema}
             initialValues={{
               hadFever: "yes",
               temperature: "",
@@ -49,7 +54,7 @@ export default class App extends Component {
               Keyboard.dismiss();
             }}
           >
-            {({ handleChange, handleSubmit, values }) => (
+            {({ handleChange, handleSubmit, values, errors }) => (
               <View>
                 <View style={styles.box}>
                   <Text style={styles.textLabel}>
@@ -76,10 +81,16 @@ export default class App extends Component {
                   </Text>
                   <TextInput
                     label="(Temperature reading from a thermometer)"
+                    name="temperature"
                     onChangeText={handleChange("temperature")}
                     value={values.temperature}
                     placeholder="80"
                   />
+                  {errors.temperature && (
+                    <Text style={{ fontSize: 10, color: "red" }}>
+                      {errors.temperature}
+                    </Text>
+                  )}
                 </View>
                 <View style={styles.box}>
                   <Text style={styles.textLabel}>Have you had cough?</Text>
@@ -131,7 +142,7 @@ const styles = StyleSheet.create({
     color: Colors.white
   },
   textLabel: {
-    fontSize: 30,
+    fontSize: 20,
     fontWeight: "100",
     color: Colors.black,
     marginTop: 20,
